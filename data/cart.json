@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "tokenId": 4,
+    "cart": [
+      { "productId": 1, "quantity": 2 },
+      { "productId": 8, "quantity": 5 }
+    ]
+  },
+  { "id": 2, "tokenId": 11, "cart": [{ "productId": 11, "quantity": 4 }] },
+  { "id": 3, "tokenId": 10, "cart": [{ "productId": 15, "quantity": 7 }] },
+  {
+    "id": 4,
+    "tokenId": 1,
+    "cart": [
+      { "productId": 20, "quantity": 4 },
+      { "productId": 1, "quantity": 3 }
+    ]
+  }
+]
