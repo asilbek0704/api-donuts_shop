@@ -9,6 +9,11 @@ let sql;
 const generateToken = require('./helpers/generateToken');
 const validateQuery = require('./helpers/validateQuery');
 
+const products = require('./routes/products');
+// const category = require('./routes/category');
+// const cart = require('./routes/cart');
+// const checkout = require('./routes/checkout');
+
 app.use(
   cors({
     origin: '*',
