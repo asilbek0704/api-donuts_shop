@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 5555;
 let sql;
 
 const generateToken = require('./helpers/generateToken');
-const checkAuthToken = require('./helpers/checkAuthToken');
+const validateQuery = require('./helpers/validateQuery');
 
 app.use(
   cors({
@@ -58,13 +58,25 @@ app.get('/api/users/accessToken', (req, res) => {
   generateToken(req, res);
 });
 
-app.get('/api/checkToken', async (req, res) => {
-  console.log(await checkAuthToken(req.query.token));
-  res.send('Token check');
+app.use((req, res, next) => {
+  if (req.path.endsWith('/api/users/accessToken')) {
+    next();
+  }
+
+  if (req.headers.authorization) {
+    validateQuery(req, res, next);
+  } else {
+    return res.status(401).send('Нет доступа');
+  }
 });
 
+app.use('/api/products', products);
+// app.use('/api/productCategory', category);
+// app.use('/api/cart', cart);
+// app.use('/api/checkout', checkout);
+
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.send('Asilbek`s donuts REST API');
 });
 
 app.listen(PORT, () => {
