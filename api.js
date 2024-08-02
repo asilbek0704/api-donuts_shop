@@ -58,8 +58,8 @@ app.get('/api/users/accessToken', (req, res) => {
   generateToken(req, res);
 });
 
-app.get('/api/checkToken', (req, res) => {
-  console.log(checkAuthToken(req.query.token));
+app.get('/api/checkToken', async (req, res) => {
+  console.log(await checkAuthToken(req.query.token));
   res.send('Token check');
 });
 
