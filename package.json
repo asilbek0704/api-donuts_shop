@@ -1,0 +1,21 @@
+{
+  "name": "donuts-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "api.js",
+  "scripts": {
+    "start": "node api.js",
+    "dev": "nodemon api.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Asilbek Nizamov",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^11.1.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
