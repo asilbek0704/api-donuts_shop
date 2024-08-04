@@ -11,7 +11,7 @@ const validateQuery = require('./helpers/validateQuery');
 
 const products = require('./routes/products');
 const category = require('./routes/category');
-// const cart = require('./routes/cart');
+const cart = require('./routes/cart');
 // const checkout = require('./routes/checkout');
 
 app.use(
@@ -77,7 +77,7 @@ app.use((req, res, next) => {
 
 app.use('/api/products', products);
 app.use('/api/productCategory', category);
-// app.use('/api/cart', cart);
+app.use('/api/cart', cart);
 // app.use('/api/checkout', checkout);
 
 app.get('/', (req, res) => {
