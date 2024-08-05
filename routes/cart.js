@@ -40,7 +40,6 @@ router.delete('/products/:id', async (req, res) => {
   }
 
   const tokenId = await getTokenId(token);
-  console.log('TOKEN ID: ', tokenId);
 
   if (await tokenId) {
     sql = db.prepare('DELETE FROM cart WHERE tokenId = ? AND productId = ?');

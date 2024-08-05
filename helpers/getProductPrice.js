@@ -9,7 +9,6 @@ const getProductPrice = productId => {
         reject('Ошибка сервера');
       }
 
-      console.log(price);
       resolve(price);
     });
   });
