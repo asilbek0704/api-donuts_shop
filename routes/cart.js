@@ -36,9 +36,29 @@ router.post('/products', async (req, res) => {
           product.quantity = cartProduct.quantity;
         }
 
+        const {
+          id: productId,
+          name,
+          category,
+          price,
+          image,
+          time,
+          hints,
+          quantity,
+        } = product;
+
         return res.json({
+          product: {
+            productId,
+            quantity,
+            name,
+            category,
+            price,
+            image,
+            time,
+            hints,
+          },
           message: 'Товар успешно добавлен в корзину',
-          product,
         });
       });
     });
@@ -61,16 +81,16 @@ router.delete('/products/:id', async (req, res) => {
   if (await tokenId) {
     sql = db.prepare('DELETE FROM cart WHERE tokenId = ? AND productId = ?');
 
-    sql.run(tokenId, productId);
+    sql.run(tokenId, productId, () => {
+      sql = db.prepare('SELECT * FROM products WHERE id = ?');
 
-    sql = db.prepare('SELECT * FROM products WHERE id = ?');
+      sql.get(productId, (_, product) => {
+        product.hints = product?.hints?.split(', ');
 
-    sql.get(productId, (_, product) => {
-      product.hints = product?.hints?.split(', ');
-
-      return res.json({
-        message: 'Товар успешно удален из корзины',
-        product,
+        return res.json({
+          message: 'Товар успешно удален из корзины',
+          product,
+        });
       });
     });
   } else {

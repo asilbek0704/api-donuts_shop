@@ -59,7 +59,27 @@ router.get('/:id', async (req, res) => {
           product.quantity = cartProduct.quantity;
         }
 
-        return res.json(product);
+        const {
+          id: productId,
+          name,
+          category,
+          price,
+          image,
+          time,
+          hints,
+          quantity,
+        } = product;
+
+        return res.json({
+          productId,
+          quantity,
+          name,
+          category,
+          price,
+          image,
+          time,
+          hints,
+        });
       });
     });
   } else {
