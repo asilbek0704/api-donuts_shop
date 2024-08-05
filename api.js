@@ -14,6 +14,8 @@ const category = require('./routes/category');
 const cart = require('./routes/cart');
 const checkout = require('./routes/checkout');
 
+app.use(express.static('public'));
+
 app.use(
   cors({
     origin: '*',
@@ -22,49 +24,15 @@ app.use(
 
 app.use(express.json());
 
-/*db.serialize(() => {
-  db.run(`
-        CREATE TABLE IF NOT EXISTS orders (
-        id INTEGER PRIMARY KEY,
-        tokenId INTEGER
-      );
-    `);
-
-  db.run(`
-    CREATE TABLE IF NOT EXISTS order_user_data (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    order_id INTEGER,
-    client TEXT,
-    address TEXT,
-    phone TEXT,
-    email TEXT,
-    distribution TEXT,
-    payment TEXT,
-    comments TEXT,
-    FOREIGN KEY (order_id) REFERENCES orders(id)
-    );
-  `);
-
-  db.run(`
-    CREATE TABLE IF NOT EXISTS order_products (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    order_id INTEGER,
-    productId INTEGER,
-    quantity INTEGER,
-    FOREIGN KEY (order_id) REFERENCES orders(id)
-    );
-  `);
-
-  console.log('Tables created successfully!');
-});
-db.close();*/
-
 app.get('/api/users/accessToken', (req, res) => {
   generateToken(req, res);
 });
 
 app.use((req, res, next) => {
-  if (req.path.endsWith('/api/users/accessToken')) {
+  if (
+    req.path.endsWith('/api/users/accessToken') ||
+    req.path.includes('/images/')
+  ) {
     next();
   }
 
