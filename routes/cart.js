@@ -88,7 +88,7 @@ router.get('/', async (req, res) => {
 
       return res.json({
         products,
-        totalCount: Number(totalCount.toFixed(2)),
+        totalCount: totalCount,
         totalPrice: Number(totalPrice.toFixed(2)),
       });
     });
