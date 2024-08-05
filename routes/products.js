@@ -43,20 +43,24 @@ router.get('/:id', async (req, res) => {
   }
 
   if (await tokenId) {
-    sql = db.prepare(
-      'SELECT products.id, name, category, price, image, time, hints, quantity FROM products INNER JOIN cart ON products.id = cart.productId WHERE products.id = ?'
-    );
+    sql = db.prepare('SELECT * FROM products WHERE id = ?');
 
-    sql.get(id, (err, product) => {
-      if (err) {
-        return res.status(500).send('Ошибка сервера');
-      }
+    sql.get(id, (_, product) => {
+      sql = db.prepare(
+        'SELECT * FROM cart WHERE productId = ? AND tokenId = ?'
+      );
 
-      if (!product) {
-        return res.status(404).send('Продукт не найден');
-      }
+      sql.get([id, tokenId], (_, cartProduct) => {
+        product.hints = product?.hints?.split(', ');
 
-      return res.json(product);
+        if (!cartProduct) {
+          product.quantity = 1;
+        } else {
+          product.quantity = cartProduct.quantity;
+        }
+
+        return res.json(product);
+      });
     });
   } else {
     res.status(403).send('Нет доступа');

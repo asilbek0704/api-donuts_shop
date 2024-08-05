@@ -20,10 +20,27 @@ router.post('/products', async (req, res) => {
 
     sql.run(tokenId, productId, quantity);
 
-    res.json({
-      message: 'Товар успешно добавлен в корзину',
-      productId,
-      quantity,
+    sql = db.prepare('SELECT * FROM products WHERE id = ?');
+
+    sql.get(productId, (_, product) => {
+      sql = db.prepare(
+        'SELECT * FROM cart WHERE productId = ? AND tokenId = ?'
+      );
+
+      sql.get([productId, tokenId], (_, cartProduct) => {
+        product.hints = product?.hints?.split(', ');
+
+        if (!cartProduct) {
+          product.quantity = 1;
+        } else {
+          product.quantity = cartProduct.quantity;
+        }
+
+        return res.json({
+          message: 'Товар успешно добавлен в корзину',
+          product,
+        });
+      });
     });
   } else {
     res.status(403).send('Нет доступа');
@@ -46,9 +63,15 @@ router.delete('/products/:id', async (req, res) => {
 
     sql.run(tokenId, productId);
 
-    res.json({
-      message: 'Товар успешно удален из корзины',
-      productId,
+    sql = db.prepare('SELECT * FROM products WHERE id = ?');
+
+    sql.get(productId, (_, product) => {
+      product.hints = product?.hints?.split(', ');
+
+      return res.json({
+        message: 'Товар успешно удален из корзины',
+        product,
+      });
     });
   } else {
     res.status(403).send('Нет доступа');
